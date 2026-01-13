@@ -1,0 +1,657 @@
+modbus:
+  - name: Growatt_spf_6000es_plus
+    type: serial
+    method: rtu
+    port: /dev/ttyUSB1
+    baudrate: 9600
+    stopbits: 1
+    bytesize: 8
+    parity: N
+
+    binary_sensors:
+      - name: Standby
+        unique_id: spf_standby_state
+        slave: 1
+        address: 0
+        input_type: holding
+
+    sensors:
+      # System run state
+      - name: Growatt Status
+        unique_id: growatt_status
+        slave: 1
+        address: 0
+        input_type: input
+        data_type: int16
+
+      ##################################################
+      #                PV1 / MPPT1                     #
+      ##################################################
+
+      # PV1 voltage
+      - name: PV1 voltage
+        unique_id: spf_pv1_voltage
+        device_class: voltage
+        unit_of_measurement: V
+        slave: 1
+        address: 1
+        input_type: input
+        data_type: int16
+        scale: 0.1
+        precision: 1
+
+      # PV1 Power
+      - name: PV1 Power
+        unique_id: spf_pv1_power
+        device_class: power
+        unit_of_measurement: W
+        slave: 1
+        address: 3
+        input_type: input
+        data_type: uint32
+        scale: 0.1
+        precision: 1
+
+      # PV1 current
+      - name: PV1 current
+        unique_id: spf_pv1_current
+        device_class: current
+        unit_of_measurement: A
+        slave: 1
+        address: 7
+        input_type: input
+        data_type: int16
+        scale: 0.1
+        precision: 1
+
+      # PV1 Energy today
+      - name: PV1 Energy today
+        unique_id: spf_pv1_energy_today
+        device_class: energy
+        unit_of_measurement: kWh
+        slave: 1
+        address: 48
+        input_type: input
+        data_type: uint32
+        scale: 0.1
+        precision: 1
+
+      # PV1 Energy total
+      - name: PV1 Energy total
+        unique_id: spf_pv1_energy_total
+        device_class: energy
+        unit_of_measurement: kWh
+        state_class: total_increasing
+        slave: 1
+        address: 50
+        input_type: input
+        data_type: uint32
+        scale: 0.1
+        precision: 1
+
+      ##################################################
+      #                PV2 / MPPT2                     #
+      ##################################################
+
+      # PV2 voltage
+      - name: PV2 voltage
+        unique_id: spf_pv2_voltage
+        device_class: voltage
+        unit_of_measurement: V
+        slave: 1
+        address: 2
+        input_type: input
+        data_type: int16
+        scale: 0.1
+        precision: 1
+
+      # PV2 Power
+      - name: PV2 power
+        unique_id: spf_pv2_power
+        device_class: power
+        unit_of_measurement: W
+        slave: 1
+        address: 5
+        input_type: input
+        data_type: uint32
+        scale: 0.1
+        precision: 1
+
+      # PV2 current
+      - name: PV2 current
+        unique_id: spf_pv2_current
+        device_class: current
+        unit_of_measurement: A
+        slave: 1
+        address: 8
+        input_type: input
+        data_type: int16
+        scale: 0.1
+        precision: 1
+
+      # PV2 Energy today
+      - name: PV2 Energy today
+        unique_id: spf_pv2_energy_today
+        device_class: energy
+        unit_of_measurement: kWh
+        slave: 1
+        address: 52
+        input_type: input
+        data_type: uint32
+        scale: 0.1
+        precision: 1
+
+      # PV2 Energy total
+      - name: PV2 Energy total
+        unique_id: spf_pv2_energy_total
+        device_class: energy
+        unit_of_measurement: kWh
+        state_class: total_increasing
+        slave: 1
+        address: 54
+        input_type: input
+        data_type: uint32
+        scale: 0.1
+        precision: 1
+
+      ##################################################
+      #              AC INVERTER OUT                   #
+      ##################################################
+
+      # Inverter Output Power
+      - name: Inverter Output Power
+        unique_id: spf_Inverter_output_power
+        device_class: power
+        unit_of_measurement: W
+        slave: 1
+        address: 9
+        input_type: input
+        data_type: uint32
+        scale: 0.1
+        precision: 1
+
+      # Inverter Output Current
+      - name: Inverter Output Current
+        unique_id: spf_Inverter_output_current
+        device_class: current
+        unit_of_measurement: A
+        slave: 1
+        address: 34
+        input_type: input
+        data_type: int16
+        scale: 0.1
+        precision: 1
+
+      # Inverter Output apparent power
+      - name: Inverter Output apparent power
+        unique_id: spf_inverter_output_apparent_power
+        device_class: apparent_power
+        unit_of_measurement: VA
+        slave: 1
+        address: 11
+        input_type: input
+        data_type: uint32
+        scale: 0.1
+        precision: 1
+
+      # Inverter output voltage
+      - name: Inverter output voltage
+        unique_id: spf_inverter_output_voltage
+        device_class: voltage
+        unit_of_measurement: V
+        slave: 1
+        address: 22
+        input_type: input
+        data_type: int16
+        scale: 0.1
+
+      # Inverter output frequency
+      - name: Inverter output frequency
+        unique_id: spf_inverter_output_frequency
+        device_class: frequency
+        unit_of_measurement: Hz
+        slave: 1
+        address: 23
+        input_type: input
+        data_type: int16
+        scale: 0.01
+        precision: 2
+
+      # Inverter Load Percent
+      - name: Inverter Load Percent
+        unique_id: spf_inverter_load_percent
+        unit_of_measurement: "%"
+        slave: 1
+        address: 27
+        input_type: input
+        data_type: int16
+        scale: 0.1
+        precision: 1
+
+      # Inverter Out Energy Today
+      - name: Inverter Out Energy today
+        unique_id: spf_inverter_out_energy_today
+        device_class: energy
+        unit_of_measurement: kWh
+        slave: 1
+        address: 64
+        input_type: input
+        data_type: uint32
+        scale: 0.1
+        precision: 1
+
+      # Inverter Out Energy Total
+      - name: Inverter Out Energy Total
+        unique_id: spf_inverter_out_energy_total
+        device_class: energy
+        unit_of_measurement: kWh
+        state_class: total_increasing
+        slave: 1
+        address: 66
+        input_type: input
+        data_type: uint32
+        scale: 0.1
+        precision: 1
+
+      # Total Discharge Energy Today
+      - name: Total Discharge Energy Today
+        unique_id: spf_total_discharge_energy_today
+        device_class: energy
+        unit_of_measurement: kWh
+        slave: 1
+        address: 85
+        input_type: input
+        data_type: uint32
+        scale: 0.1
+        precision: 1
+
+      # Discharge Energy Total
+      - name: Discharge Energy Total
+        unique_id: spf_discharge_energy_total
+        device_class: energy
+        unit_of_measurement: kWh
+        state_class: total_increasing
+        slave: 1
+        address: 87
+        input_type: input
+        data_type: uint32
+        scale: 0.1
+        precision: 1
+
+      ##################################################
+      #           USED GRID FOR CHARGE BATT            #
+      ##################################################
+
+      # Grid Charge Power
+      - name: Grid Charge Power
+        unique_id: spf_grid_charge_power
+        device_class: power
+        unit_of_measurement: W
+        slave: 1
+        address: 13
+        input_type: input
+        data_type: uint32
+        scale: 0.1
+        precision: 1
+
+      # Grid Charge Apparent Power
+      - name: Grid Charge Apparent Power
+        unique_id: spf_grid_charge_apparent_power
+        device_class: apparent_power
+        unit_of_measurement: VA
+        slave: 1
+        address: 15
+        input_type: input
+        data_type: uint32
+        scale: 0.1
+        precision: 1
+
+      # Grid Charge Energy today
+      - name: Grid Charge Energy today
+        unique_id: spf_grid_charge_today
+        device_class: energy
+        unit_of_measurement: kWh
+        slave: 1
+        address: 56
+        input_type: input
+        data_type: uint32
+        scale: 0.1
+        precision: 1
+
+      # Grid Charge Energy total
+      - name: Grid Charge Energy total
+        unique_id: spf_grid_charge_total
+        device_class: energy
+        unit_of_measurement: kWh
+        state_class: total_increasing
+        slave: 1
+        address: 58
+        input_type: input
+        data_type: uint32
+        scale: 0.1
+        precision: 1
+
+      ##################################################
+      #                    BATTERY                     #
+      ##################################################
+
+      # Battery Voltage
+      - name: Battery Voltage
+        unique_id: spf_battery_voltage
+        device_class: voltage
+        unit_of_measurement: V
+        slave: 1
+        address: 17
+        input_type: input
+        data_type: int16
+        scale: 0.01
+        precision: 2
+
+      # Battery Current
+      - name: Battery Current
+        unique_id: spf_battery_current
+        device_class: current
+        unit_of_measurement: A
+        slave: 1
+        address: 35
+        input_type: input
+        data_type: int16
+        scale: 0.1
+        precision: 1
+
+      # Battery power
+      - name: Battery power
+        unique_id: spf_bat_power
+        device_class: power
+        unit_of_measurement: W
+        slave: 1
+        address: 77
+        input_type: int32
+        scale: 0.1
+        precision: 1
+
+      # Battery SOC
+      - name: Battery SOC
+        unique_id: spf_battery_soc
+        device_class: battery
+        unit_of_measurement: "%"
+        slave: 1
+        address: 18
+        input_type: input
+        data_type: int16
+
+      # DC Bus Voltage
+      - name: DC Bus Voltage
+        unique_id: spf_dc_bus_voltage
+        device_class: voltage
+        unit_of_measurement: V
+        slave: 1
+        address: 19
+        input_type: input
+        data_type: int16
+        scale: 0.1
+        precision: 1
+
+      # DC Charge Voltage
+      - name: DC Charge Voltage
+        unique_id: spf_dc_charge_voltage
+        device_class: voltage
+        unit_of_measurement: V
+        slave: 1
+        address: 24
+        input_type: input
+        data_type: int16
+        scale: 0.1
+        precision: 1
+
+      # Battery Port volt
+      - name: Battery Port voltage
+        unique_id: spf_battery_port_voltage
+        device_class: voltage
+        unit_of_measurement: V
+        slave: 1
+        address: 28
+        input_type: input
+        data_type: int16
+        scale: 0.01
+        precision: 2
+
+      # Battery Bus Voltage
+      - name: Battery Bus Voltage
+        unique_id: spf_battery_bus_voltage
+        device_class: voltage
+        unit_of_measurement: V
+        slave: 1
+        address: 29
+        input_type: input
+        data_type: int16
+        scale: 0.01
+        precision: 2
+
+      # Battery Charge current
+      - name: Battery Charge current
+        unique_id: spf_battery_charge_current
+        device_class: current
+        unit_of_measurement: A
+        slave: 1
+        address: 83
+        input_type: input
+        data_type: int16
+        scale: 0.1
+        precision: 1
+
+      # Battery DisCharge current
+      - name: Battery DisCharge current
+        unique_id: spf_battery_discharge_current
+        device_class: current
+        unit_of_measurement: A
+        slave: 1
+        address: 84
+        input_type: input
+        data_type: int16
+        scale: 0.1
+        precision: 1
+
+      # Battery Charge Energy Today
+      - name: Battery Charge Energy Today
+        unique_id: spf_battery_charge_energy_today
+        device_class: energy
+        unit_of_measurement: kWh
+        slave: 1
+        address: 98
+        input_type: input
+        data_type: uint32
+        scale: 0.1
+        precision: 1
+
+      # Battery Charge Energy Total
+      - name: Battery Charge Energy Total
+        unique_id: spf_battery_charge_energy_total
+        device_class: energy
+        unit_of_measurement: kWh
+        state_class: total_increasing
+        slave: 1
+        address: 100
+        input_type: input
+        data_type: uint32
+        scale: 0.1
+        precision: 1
+
+      # Battery Discharge Energy Today
+      - name: Battery Discharge Energy Today
+        unique_id: spf_battery_discharge_energy_today
+        device_class: energy
+        unit_of_measurement: kWh
+        slave: 1
+        address: 60
+        input_type: input
+        data_type: uint32
+        scale: 0.1
+        precision: 1
+
+      # Battery Discharge Energy total
+      - name: Battery Discharge Energy total
+        unique_id: spf_battery_discharge_energy_total
+        device_class: energy
+        unit_of_measurement: kWh
+        state_class: total_increasing
+        slave: 1
+        address: 62
+        input_type: input
+        data_type: uint32
+        scale: 0.1
+        precision: 1
+
+      ##################################################
+      #             GRID INPUT TO INVERTER             #
+      ##################################################
+
+      # Grid input Voltage
+      - name: Grid input Voltage
+        unique_id: spf_grid_input_voltage
+        device_class: voltage
+        unit_of_measurement: V
+        slave: 1
+        address: 20
+        input_type: input
+        data_type: int16
+        scale: 0.1
+        precision: 1
+
+      # Grid input frequency
+      - name: Grid input frequency
+        unique_id: spf_grid_input_frequency
+        device_class: frequency
+        unit_of_measurement: Hz
+        slave: 1
+        address: 21
+        input_type: input
+        data_type: int16
+        scale: 0.01
+        precision: 2
+
+      # Grid Input Power
+      - name: Grid Input Power
+        unique_id: spf_grid_input_power
+        device_class: power
+        unit_of_measurement: W
+        slave: 1
+        address: 36
+        input_type: input
+        data_type: int32
+        scale: 0.1
+        precision: 1
+
+      # Grid Input Apparent Power
+      - name: Grid Input Apparent Power
+        unique_id: spf_grid_input_apparent_power
+        device_class: apparent_power
+        unit_of_measurement: VA
+        slave: 1
+        address: 38
+        input_type: input
+        data_type: uint32
+        scale: 0.1
+        precision: 1
+
+      ##################################################
+      #             TEMPERATURE INFORMATION            #
+      ##################################################
+
+      # Inverter Temperature 1
+      - name: Inverter Temperature 1
+        unique_id: spf_inverter_temp_1
+        device_class: temperature
+        unit_of_measurement: °C
+        slave: 1
+        address: 25
+        input_type: input
+        data_type: int16
+        scale: 0.1
+        precision: 1
+
+      # DC Bus Temperature
+      - name: DC Bus Temperature
+        unique_id: spf_dc_bus_temperature
+        device_class: temperature
+        unit_of_measurement: °C
+        slave: 1
+        address: 26
+        input_type: input
+        data_type: int16
+        scale: 0.1
+        precision: 1
+
+      # Inverter Temperature 2
+      - name: Inverter Temperature 2
+        unique_id: spf_inverter_temp_2
+        device_class: temperature
+        unit_of_measurement: °C
+        slave: 1
+        address: 32
+        input_type: input
+        data_type: int16
+        scale: 0.1
+        precision: 1
+
+      # Inverter Temperature 3
+      - name: Inverter Temperature 3
+        unique_id: spf_inverter_temp_3
+        device_class: temperature
+        unit_of_measurement: °C
+        slave: 1
+        address: 33
+        input_type: input
+        data_type: int16
+        scale: 0.1
+        precision: 1
+
+      ##################################################
+      #                BMS INFORMATION                 #
+      ##################################################
+
+      # BMS SOC
+      - name: BMS_SOC
+        unique_id: spf_bms_soc
+        device_class: battery
+        unit_of_measurement: "%"
+        slave: 1
+        address: 203
+        input_type: input
+        data_type: int16
+
+      # BMS Battery Average Voltage
+      - name: BMS_BatteryVolt
+        unique_id: spf_bms_voltage
+        device_class: voltage
+        unit_of_measurement: V
+        slave: 1
+        address: 204
+        input_type: input
+        data_type: int16
+        scale: 0.01
+        precision: 2
+
+      # BMS Battery Average current
+      - name: BMS_BatteryCurr
+        unique_id: spf_bms_current
+        device_class: current
+        unit_of_measurement: A
+        slave: 1
+        address: 205
+        input_type: input
+        data_type: int16
+        scale: 0.1
+        precision: 1
+
+      # BMS Battery Average temperature
+      - name: BMS_BatteryTemp
+        unique_id: spf_bms_avrg_temp
+        device_class: temperature
+        unit_of_measurement: °C
+        slave: 1
+        address: 206
+        input_type: input
+        data_type: int16
+        scale: 0.1
+        precision: 1
