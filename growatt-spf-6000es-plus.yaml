@@ -2,15 +2,16 @@ modbus:
   - name: Growatt_spf_6000es_plus
     type: serial
     method: rtu
-    port: /dev/ttyUSB1
+    port: /dev/serial/by-id/usb-WCH.CN_USB_Quad_Serial_BC62D7ABCD-if04
     baudrate: 9600
     stopbits: 1
     bytesize: 8
     parity: N
+    scan_interval: 5
 
     binary_sensors:
-      - name: Standby
-        unique_id: spf_standby_state
+      - name: Growatt Standby State
+        unique_id: growatt_standby_state
         slave: 1
         address: 0
         input_type: holding
@@ -24,13 +25,33 @@ modbus:
         input_type: input
         data_type: int16
 
+      - name: Growatt AC Output Source Read
+        unique_id: growatt_ac_output_source_read
+        slave: 1
+        address: 1
+        input_type: holding
+        data_type: int16
+
+      - name: Growatt Charge Source Read
+        unique_id: growatt_charge_source_read
+        slave: 1
+        address: 2
+        input_type: holding
+        data_type: int16
+
+      - name: Growatt Battery Type Read
+        unique_id: growatt_battery_type_read
+        slave: 1
+        address: 39
+        input_type: holding
+        data_type: int16
+
       ##################################################
-      #                PV1 / MPPT1                     #
+      #                  PV1 / MPPT1                   #
       ##################################################
 
-      # PV1 voltage
-      - name: PV1 voltage
-        unique_id: spf_pv1_voltage
+      - name: Growatt PV1 voltage
+        unique_id: growatt_pv1_voltage
         device_class: voltage
         unit_of_measurement: V
         slave: 1
@@ -39,10 +60,10 @@ modbus:
         data_type: int16
         scale: 0.1
         precision: 1
+        scan_interval: 5
 
-      # PV1 Power
-      - name: PV1 Power
-        unique_id: spf_pv1_power
+      - name: Growatt PV1 Power
+        unique_id: growatt_pv1_power
         device_class: power
         unit_of_measurement: W
         slave: 1
@@ -51,10 +72,10 @@ modbus:
         data_type: uint32
         scale: 0.1
         precision: 1
+        scan_interval: 5
 
-      # PV1 current
-      - name: PV1 current
-        unique_id: spf_pv1_current
+      - name: Growatt PV1 current
+        unique_id: growatt_pv1_current
         device_class: current
         unit_of_measurement: A
         slave: 1
@@ -63,10 +84,10 @@ modbus:
         data_type: int16
         scale: 0.1
         precision: 1
+        scan_interval: 5
 
-      # PV1 Energy today
-      - name: PV1 Energy today
-        unique_id: spf_pv1_energy_today
+      - name: Growatt PV1 Energy today
+        unique_id: growatt_pv1_energy_today
         device_class: energy
         unit_of_measurement: kWh
         slave: 1
@@ -75,10 +96,10 @@ modbus:
         data_type: uint32
         scale: 0.1
         precision: 1
+        scan_interval: 5
 
-      # PV1 Energy total
-      - name: PV1 Energy total
-        unique_id: spf_pv1_energy_total
+      - name: Growatt PV1 Energy total
+        unique_id: growatt_pv1_energy_total
         device_class: energy
         unit_of_measurement: kWh
         state_class: total_increasing
@@ -88,14 +109,14 @@ modbus:
         data_type: uint32
         scale: 0.1
         precision: 1
+        scan_interval: 5
 
       ##################################################
-      #                PV2 / MPPT2                     #
+      #                  PV2 / MPPT2                   #
       ##################################################
 
-      # PV2 voltage
-      - name: PV2 voltage
-        unique_id: spf_pv2_voltage
+      - name: Growatt PV2 voltage
+        unique_id: growatt_pv2_voltage
         device_class: voltage
         unit_of_measurement: V
         slave: 1
@@ -104,10 +125,10 @@ modbus:
         data_type: int16
         scale: 0.1
         precision: 1
+        scan_interval: 5
 
-      # PV2 Power
-      - name: PV2 power
-        unique_id: spf_pv2_power
+      - name: Growatt PV2 power
+        unique_id: growatt_pv2_power
         device_class: power
         unit_of_measurement: W
         slave: 1
@@ -116,10 +137,10 @@ modbus:
         data_type: uint32
         scale: 0.1
         precision: 1
+        scan_interval: 5
 
-      # PV2 current
-      - name: PV2 current
-        unique_id: spf_pv2_current
+      - name: Growatt PV2 current
+        unique_id: growatt_pv2_current
         device_class: current
         unit_of_measurement: A
         slave: 1
@@ -128,10 +149,10 @@ modbus:
         data_type: int16
         scale: 0.1
         precision: 1
+        scan_interval: 5
 
-      # PV2 Energy today
-      - name: PV2 Energy today
-        unique_id: spf_pv2_energy_today
+      - name: Growatt PV2 Energy today
+        unique_id: growatt_pv2_energy_today
         device_class: energy
         unit_of_measurement: kWh
         slave: 1
@@ -140,10 +161,10 @@ modbus:
         data_type: uint32
         scale: 0.1
         precision: 1
+        scan_interval: 5
 
-      # PV2 Energy total
-      - name: PV2 Energy total
-        unique_id: spf_pv2_energy_total
+      - name: Growatt PV2 Energy total
+        unique_id: growatt_pv2_energy_total
         device_class: energy
         unit_of_measurement: kWh
         state_class: total_increasing
@@ -153,14 +174,14 @@ modbus:
         data_type: uint32
         scale: 0.1
         precision: 1
+        scan_interval: 5
 
       ##################################################
-      #              AC INVERTER OUT                   #
+      #                AC INVERTER OUT                 #
       ##################################################
 
-      # Inverter Output Power
-      - name: Inverter Output Power
-        unique_id: spf_Inverter_output_power
+      - name: Growatt Inverter Output Power
+        unique_id: growatt_Inverter_output_power
         device_class: power
         unit_of_measurement: W
         slave: 1
@@ -169,10 +190,10 @@ modbus:
         data_type: uint32
         scale: 0.1
         precision: 1
+        scan_interval: 5
 
-      # Inverter Output Current
-      - name: Inverter Output Current
-        unique_id: spf_Inverter_output_current
+      - name: Growatt Inverter Output Current
+        unique_id: growatt_Inverter_output_current
         device_class: current
         unit_of_measurement: A
         slave: 1
@@ -181,10 +202,10 @@ modbus:
         data_type: int16
         scale: 0.1
         precision: 1
+        scan_interval: 5
 
-      # Inverter Output apparent power
-      - name: Inverter Output apparent power
-        unique_id: spf_inverter_output_apparent_power
+      - name: Growatt Inverter Output apparent power
+        unique_id: growatt_inverter_output_apparent_power
         device_class: apparent_power
         unit_of_measurement: VA
         slave: 1
@@ -193,10 +214,10 @@ modbus:
         data_type: uint32
         scale: 0.1
         precision: 1
+        scan_interval: 5
 
-      # Inverter output voltage
-      - name: Inverter output voltage
-        unique_id: spf_inverter_output_voltage
+      - name: Growatt Inverter output voltage
+        unique_id: growatt_inverter_output_voltage
         device_class: voltage
         unit_of_measurement: V
         slave: 1
@@ -204,10 +225,10 @@ modbus:
         input_type: input
         data_type: int16
         scale: 0.1
+        scan_interval: 5
 
-      # Inverter output frequency
-      - name: Inverter output frequency
-        unique_id: spf_inverter_output_frequency
+      - name: Growatt Inverter output frequency
+        unique_id: growatt_inverter_output_frequency
         device_class: frequency
         unit_of_measurement: Hz
         slave: 1
@@ -216,10 +237,10 @@ modbus:
         data_type: int16
         scale: 0.01
         precision: 2
+        scan_interval: 5
 
-      # Inverter Load Percent
-      - name: Inverter Load Percent
-        unique_id: spf_inverter_load_percent
+      - name: Growatt Inverter Load Percent
+        unique_id: growatt_inverter_load_percent
         unit_of_measurement: "%"
         slave: 1
         address: 27
@@ -227,10 +248,10 @@ modbus:
         data_type: int16
         scale: 0.1
         precision: 1
+        scan_interval: 5
 
-      # Inverter Out Energy Today
-      - name: Inverter Out Energy today
-        unique_id: spf_inverter_out_energy_today
+      - name: Growatt Inverter Out Energy today
+        unique_id: growatt_inverter_out_energy_today
         device_class: energy
         unit_of_measurement: kWh
         slave: 1
@@ -239,10 +260,10 @@ modbus:
         data_type: uint32
         scale: 0.1
         precision: 1
+        scan_interval: 5
 
-      # Inverter Out Energy Total
-      - name: Inverter Out Energy Total
-        unique_id: spf_inverter_out_energy_total
+      - name: Growatt Inverter Out Energy Total
+        unique_id: growatt_inverter_out_energy_total
         device_class: energy
         unit_of_measurement: kWh
         state_class: total_increasing
@@ -252,10 +273,10 @@ modbus:
         data_type: uint32
         scale: 0.1
         precision: 1
+        scan_interval: 5
 
-      # Total Discharge Energy Today
-      - name: Total Discharge Energy Today
-        unique_id: spf_total_discharge_energy_today
+      - name: Growatt Total Discharge Energy Today
+        unique_id: growatt_total_discharge_energy_today
         device_class: energy
         unit_of_measurement: kWh
         slave: 1
@@ -264,10 +285,10 @@ modbus:
         data_type: uint32
         scale: 0.1
         precision: 1
+        scan_interval: 5
 
-      # Discharge Energy Total
-      - name: Discharge Energy Total
-        unique_id: spf_discharge_energy_total
+      - name: Growatt Discharge Energy Total
+        unique_id: growatt_discharge_energy_total
         device_class: energy
         unit_of_measurement: kWh
         state_class: total_increasing
@@ -277,14 +298,14 @@ modbus:
         data_type: uint32
         scale: 0.1
         precision: 1
+        scan_interval: 5
 
       ##################################################
-      #           USED GRID FOR CHARGE BATT            #
+      #         USED GRID FOR CHARGE BATT              #
       ##################################################
 
-      # Grid Charge Power
-      - name: Grid Charge Power
-        unique_id: spf_grid_charge_power
+      - name: Growatt Grid Charge Power
+        unique_id: growatt_grid_charge_power
         device_class: power
         unit_of_measurement: W
         slave: 1
@@ -293,10 +314,10 @@ modbus:
         data_type: uint32
         scale: 0.1
         precision: 1
+        scan_interval: 5
 
-      # Grid Charge Apparent Power
-      - name: Grid Charge Apparent Power
-        unique_id: spf_grid_charge_apparent_power
+      - name: Growatt Grid Charge Apparent Power
+        unique_id: growatt_grid_charge_apparent_power
         device_class: apparent_power
         unit_of_measurement: VA
         slave: 1
@@ -305,10 +326,10 @@ modbus:
         data_type: uint32
         scale: 0.1
         precision: 1
+        scan_interval: 5
 
-      # Grid Charge Energy today
-      - name: Grid Charge Energy today
-        unique_id: spf_grid_charge_today
+      - name: Growatt Grid Charge Energy today
+        unique_id: growatt_grid_charge_today
         device_class: energy
         unit_of_measurement: kWh
         slave: 1
@@ -317,10 +338,10 @@ modbus:
         data_type: uint32
         scale: 0.1
         precision: 1
+        scan_interval: 5
 
-      # Grid Charge Energy total
-      - name: Grid Charge Energy total
-        unique_id: spf_grid_charge_total
+      - name: Growatt Grid Charge Energy total
+        unique_id: growatt_grid_charge_total
         device_class: energy
         unit_of_measurement: kWh
         state_class: total_increasing
@@ -330,14 +351,15 @@ modbus:
         data_type: uint32
         scale: 0.1
         precision: 1
+        scan_interval: 5
 
       ##################################################
       #                    BATTERY                     #
       ##################################################
 
-      # Battery Voltage
-      - name: Battery Voltage
-        unique_id: spf_battery_voltage
+      # Growatt Battery Voltage
+      - name: Growatt Battery Voltage
+        unique_id: growatt_battery_voltage
         device_class: voltage
         unit_of_measurement: V
         slave: 1
@@ -346,10 +368,11 @@ modbus:
         data_type: int16
         scale: 0.01
         precision: 2
+        scan_interval: 5
 
-      # Battery Current
-      - name: Battery Current
-        unique_id: spf_battery_current
+      # Growatt Battery Current
+      - name: Growatt Battery Current
+        unique_id: growatt_battery_current
         device_class: current
         unit_of_measurement: A
         slave: 1
@@ -357,32 +380,37 @@ modbus:
         input_type: input
         data_type: int16
         scale: 0.1
-        precision: 1
+        precision: 2
+        scan_interval: 5
 
-      # Battery power
-      - name: Battery power
-        unique_id: spf_bat_power
+      # Growatt Battery power
+      - name: Growatt Battery power
+        unique_id: growatt_bat_power
         device_class: power
         unit_of_measurement: W
         slave: 1
         address: 77
-        input_type: int32
+        input_type: input
+        data_type: int32
         scale: 0.1
         precision: 1
+        scan_interval: 5
 
-      # Battery SOC
-      - name: Battery SOC
-        unique_id: spf_battery_soc
+      # Growatt Battery SOC
+      - name: Growatt Battery SOC
+        unique_id: growatt_battery_soc
         device_class: battery
         unit_of_measurement: "%"
         slave: 1
         address: 18
         input_type: input
         data_type: int16
+        precision: 2
+        scan_interval: 5
 
-      # DC Bus Voltage
-      - name: DC Bus Voltage
-        unique_id: spf_dc_bus_voltage
+      # Growatt DC Bus Voltage
+      - name: Growatt DC Bus Voltage
+        unique_id: growatt_dc_bus_voltage
         device_class: voltage
         unit_of_measurement: V
         slave: 1
@@ -391,10 +419,11 @@ modbus:
         data_type: int16
         scale: 0.1
         precision: 1
+        scan_interval: 5
 
-      # DC Charge Voltage
-      - name: DC Charge Voltage
-        unique_id: spf_dc_charge_voltage
+      # Growatt DC Charge Voltage
+      - name: Growatt DC Charge Voltage
+        unique_id: growatt_dc_charge_voltage
         device_class: voltage
         unit_of_measurement: V
         slave: 1
@@ -402,11 +431,12 @@ modbus:
         input_type: input
         data_type: int16
         scale: 0.1
-        precision: 1
+        precision: 2
+        scan_interval: 5
 
-      # Battery Port volt
-      - name: Battery Port voltage
-        unique_id: spf_battery_port_voltage
+      # Growatt Battery Port volt
+      - name: Growatt Battery Port voltage
+        unique_id: growatt_battery_port_voltage
         device_class: voltage
         unit_of_measurement: V
         slave: 1
@@ -415,10 +445,11 @@ modbus:
         data_type: int16
         scale: 0.01
         precision: 2
+        scan_interval: 5
 
-      # Battery Bus Voltage
-      - name: Battery Bus Voltage
-        unique_id: spf_battery_bus_voltage
+      # Growatt Battery Bus Voltage
+      - name: Growatt Battery Bus Voltage
+        unique_id: growatt_battery_bus_voltage
         device_class: voltage
         unit_of_measurement: V
         slave: 1
@@ -427,10 +458,11 @@ modbus:
         data_type: int16
         scale: 0.01
         precision: 2
+        scan_interval: 5
 
-      # Battery Charge current
-      - name: Battery Charge current
-        unique_id: spf_battery_charge_current
+      # Growatt Battery Charge current
+      - name: Growatt Battery Charge current
+        unique_id: growatt_battery_charge_current
         device_class: current
         unit_of_measurement: A
         slave: 1
@@ -438,11 +470,12 @@ modbus:
         input_type: input
         data_type: int16
         scale: 0.1
-        precision: 1
+        precision: 2
+        scan_interval: 5
 
-      # Battery DisCharge current
-      - name: Battery DisCharge current
-        unique_id: spf_battery_discharge_current
+      # Growatt Battery DisCharge current
+      - name: Growatt Battery DisCharge current
+        unique_id: growatt_battery_discharge_current
         device_class: current
         unit_of_measurement: A
         slave: 1
@@ -450,11 +483,12 @@ modbus:
         input_type: input
         data_type: int16
         scale: 0.1
-        precision: 1
+        precision: 2
+        scan_interval: 5
 
-      # Battery Charge Energy Today
-      - name: Battery Charge Energy Today
-        unique_id: spf_battery_charge_energy_today
+      # Growatt Battery Charge Energy Today
+      - name: Growatt Battery Charge Energy Today
+        unique_id: growatt_battery_charge_energy_today
         device_class: energy
         unit_of_measurement: kWh
         slave: 1
@@ -462,11 +496,12 @@ modbus:
         input_type: input
         data_type: uint32
         scale: 0.1
-        precision: 1
+        precision: 2
+        scan_interval: 5
 
-      # Battery Charge Energy Total
-      - name: Battery Charge Energy Total
-        unique_id: spf_battery_charge_energy_total
+      # Growatt Battery Charge Energy Total
+      - name: Growatt Battery Charge Energy Total
+        unique_id: growatt_battery_charge_energy_total
         device_class: energy
         unit_of_measurement: kWh
         state_class: total_increasing
@@ -475,11 +510,12 @@ modbus:
         input_type: input
         data_type: uint32
         scale: 0.1
-        precision: 1
+        precision: 2
+        scan_interval: 5
 
-      # Battery Discharge Energy Today
-      - name: Battery Discharge Energy Today
-        unique_id: spf_battery_discharge_energy_today
+      # Growatt Battery Discharge Energy Today
+      - name: Growatt Battery Discharge Energy Today
+        unique_id: growatt_battery_discharge_energy_today
         device_class: energy
         unit_of_measurement: kWh
         slave: 1
@@ -487,11 +523,12 @@ modbus:
         input_type: input
         data_type: uint32
         scale: 0.1
-        precision: 1
+        precision: 2
+        scan_interval: 5
 
-      # Battery Discharge Energy total
-      - name: Battery Discharge Energy total
-        unique_id: spf_battery_discharge_energy_total
+      # Growatt Battery Discharge Energy total
+      - name: Growatt Battery Discharge Energy total
+        unique_id: growatt_battery_discharge_energy_total
         device_class: energy
         unit_of_measurement: kWh
         state_class: total_increasing
@@ -500,15 +537,16 @@ modbus:
         input_type: input
         data_type: uint32
         scale: 0.1
-        precision: 1
+        precision: 2
+        scan_interval: 5
 
       ##################################################
       #             GRID INPUT TO INVERTER             #
       ##################################################
 
-      # Grid input Voltage
-      - name: Grid input Voltage
-        unique_id: spf_grid_input_voltage
+      # Growatt Grid input Voltage
+      - name: Growatt Grid input Voltage
+        unique_id: growatt_grid_input_voltage
         device_class: voltage
         unit_of_measurement: V
         slave: 1
@@ -516,11 +554,12 @@ modbus:
         input_type: input
         data_type: int16
         scale: 0.1
-        precision: 1
+        precision: 2
+        scan_interval: 5
 
-      # Grid input frequency
-      - name: Grid input frequency
-        unique_id: spf_grid_input_frequency
+      # Growatt Grid input frequency
+      - name: Growatt Grid input frequency
+        unique_id: growatt_grid_input_frequency
         device_class: frequency
         unit_of_measurement: Hz
         slave: 1
@@ -529,10 +568,11 @@ modbus:
         data_type: int16
         scale: 0.01
         precision: 2
+        scan_interval: 5
 
-      # Grid Input Power
-      - name: Grid Input Power
-        unique_id: spf_grid_input_power
+      # Growatt Grid Input Power
+      - name: Growatt Grid Input Power
+        unique_id: growatt_grid_input_power
         device_class: power
         unit_of_measurement: W
         slave: 1
@@ -540,11 +580,12 @@ modbus:
         input_type: input
         data_type: int32
         scale: 0.1
-        precision: 1
+        precision: 2
+        scan_interval: 5
 
-      # Grid Input Apparent Power
-      - name: Grid Input Apparent Power
-        unique_id: spf_grid_input_apparent_power
+      # Growatt Grid Input Apparent Power
+      - name: Growatt Grid Input Apparent Power
+        unique_id: growatt_grid_input_apparent_power
         device_class: apparent_power
         unit_of_measurement: VA
         slave: 1
@@ -552,15 +593,16 @@ modbus:
         input_type: input
         data_type: uint32
         scale: 0.1
-        precision: 1
+        precision: 2
+        scan_interval: 5
 
       ##################################################
-      #             TEMPERATURE INFORMATION            #
+      #            TEMPERATURE INFORMATION             #
       ##################################################
 
-      # Inverter Temperature 1
-      - name: Inverter Temperature 1
-        unique_id: spf_inverter_temp_1
+      # Growatt Inverter Temperature 1
+      - name: Growatt Inverter Temperature 1
+        unique_id: growatt_inverter_temperature_1
         device_class: temperature
         unit_of_measurement: °C
         slave: 1
@@ -568,11 +610,12 @@ modbus:
         input_type: input
         data_type: int16
         scale: 0.1
-        precision: 1
+        precision: 2
+        scan_interval: 5
 
-      # DC Bus Temperature
-      - name: DC Bus Temperature
-        unique_id: spf_dc_bus_temperature
+      # Growatt DC Bus Temperature
+      - name: Growatt DC Bus Temperature
+        unique_id: growatt_dc_bus_temperature
         device_class: temperature
         unit_of_measurement: °C
         slave: 1
@@ -580,11 +623,12 @@ modbus:
         input_type: input
         data_type: int16
         scale: 0.1
-        precision: 1
+        precision: 2
+        scan_interval: 5
 
-      # Inverter Temperature 2
-      - name: Inverter Temperature 2
-        unique_id: spf_inverter_temp_2
+      # Growatt Inverter Temperature 2
+      - name: Growatt Inverter Temperature 2
+        unique_id: growatt_inverter_temp_2
         device_class: temperature
         unit_of_measurement: °C
         slave: 1
@@ -592,11 +636,12 @@ modbus:
         input_type: input
         data_type: int16
         scale: 0.1
-        precision: 1
+        precision: 2
+        scan_interval: 5
 
-      # Inverter Temperature 3
-      - name: Inverter Temperature 3
-        unique_id: spf_inverter_temp_3
+      # Growatt Inverter Temperature 3
+      - name: Growatt Inverter Temperature 3
+        unique_id: growatt_inverter_temp_3
         device_class: temperature
         unit_of_measurement: °C
         slave: 1
@@ -604,25 +649,28 @@ modbus:
         input_type: input
         data_type: int16
         scale: 0.1
-        precision: 1
+        precision: 2
+        scan_interval: 5
 
       ##################################################
-      #                BMS INFORMATION                 #
+      #              	 BMS INFORMATION    	       #
       ##################################################
 
-      # BMS SOC
-      - name: BMS_SOC
-        unique_id: spf_bms_soc
+      # Growatt BMS SOC
+      - name: Growatt BMS SOC
+        unique_id: growatt_bms_soc
         device_class: battery
         unit_of_measurement: "%"
         slave: 1
         address: 203
         input_type: input
         data_type: int16
+        precision: 2
+        scan_interval: 5
 
-      # BMS Battery Average Voltage
-      - name: BMS_BatteryVolt
-        unique_id: spf_bms_voltage
+      # Growatt BMS Voltage
+      - name: Growatt BMS Voltage
+        unique_id: growatt_bms_voltage
         device_class: voltage
         unit_of_measurement: V
         slave: 1
@@ -631,10 +679,11 @@ modbus:
         data_type: int16
         scale: 0.01
         precision: 2
+        scan_interval: 5
 
-      # BMS Battery Average current
-      - name: BMS_BatteryCurr
-        unique_id: spf_bms_current
+      # Growatt BMS Current
+      - name: Growatt BMS Current
+        unique_id: growatt_bms_current
         device_class: current
         unit_of_measurement: A
         slave: 1
@@ -643,10 +692,11 @@ modbus:
         data_type: int16
         scale: 0.1
         precision: 1
+        scan_interval: 5
 
-      # BMS Battery Average temperature
-      - name: BMS_BatteryTemp
-        unique_id: spf_bms_avrg_temp
+      # Growatt BMS Temperature
+      - name: Growatt BMS Temperature
+        unique_id: growatt_bms_temp
         device_class: temperature
         unit_of_measurement: °C
         slave: 1
@@ -655,3 +705,63 @@ modbus:
         data_type: int16
         scale: 0.1
         precision: 1
+        scan_interval: 5
+
+      ##################################################
+      #              	 FAN INFORMATION    	       #
+      ##################################################
+
+      # MPPT Charger Fan Speed (%)
+      - name: Growatt MPPT Fan Speed
+        unique_id: growatt_mppt_fan_speed
+        slave: 1
+        address: 81
+        input_type: input
+        data_type: uint16
+        unit_of_measurement: "%"
+        device_class: power_factor
+        precision: 0
+        scan_interval: 5
+
+        # Inverter Fan Speed (%)
+      - name: Growatt Inverter Fan Speed
+        unique_id: growatt_inverter_fan_speed
+        slave: 1
+        address: 82
+        input_type: input
+        data_type: uint16
+        unit_of_measurement: "%"
+        device_class: power_factor
+        precision: 0
+        scan_interval: 5
+
+      ##################################################
+      #             	 ALARM INFORMATION    	       #
+      ##################################################
+
+        # FAULT bit register
+      - name: Growatt Fault Code
+        unique_id: growatt_fault_code
+        slave: 1
+        address: 30
+        input_type: input
+        data_type: uint16
+        scan_interval: 5
+
+        # WARNING low 0x0001 - 0x8000
+      - name: Growatt Warning Code L
+        unique_id: growatt_warning_code_l
+        slave: 1
+        address: 41
+        input_type: input
+        data_type: uint16
+        scan_interval: 5
+
+        # WARNING high extended
+      - name: Growatt Warning Code H
+        unique_id: growatt_warning_code_h
+        slave: 1
+        address: 42
+        input_type: input
+        data_type: uint16
+        scan_interval: 5
