@@ -1,0 +1,111 @@
+template:
+  - sensor:
+      - name: Growatt AC Output Source
+        unique_id: growatt_ac_output_source
+        state: >
+          {% set map = {0:'SBU priority', 1:'Solar first', 2:'Utility first', 3:'SUB priority'} %}
+          {{ map.get(states('sensor.growatt_ac_output_source_read')|int, 'Unknown') }}
+
+      - name: Growatt Charge Source
+        unique_id: growatt_charge_source
+        state: >
+          {% set map = {0:'Solar first', 1:'Solar and Utility', 2:'Only Solar'} %}
+          {{ map.get(states('sensor.growatt_charge_source_read')|int, 'Unknown') }}
+
+      - name: Growatt Battery Type
+        unique_id: growatt_battery_type
+        state: >
+          {% set map = {0:'AGM', 1:'Flooded', 2:'User-Defined', 3:'Lithium', 4:'User-Defined 2'} %}
+          {{ map.get(states('sensor.growatt_battery_type_read')|int, 'Unknown') }}
+
+      - name: "Growatt Status Text"
+        unique_id: growatt_status_text
+        state: >
+          {% set map = {
+            0: 'Standby',
+            1: 'PV & Grid Supporting Loads',
+            2: 'Battery Discharging',
+            3: 'Fault',
+            4: 'Info/Flash/Booting',
+            5: 'PV Charging',
+            6: 'Grid Charging',
+            7: 'PV & Grid Charging',
+            8: 'PV+Grid Charging + Grid Bypass',
+            9: 'PV Charging + Grid Bypass',
+            10: 'Grid Charging + Grid Bypass',
+            11: 'Grid Bypass',
+            12: 'PV Charging + Load Supporting',
+            13: 'PV Discharging',
+            14: 'PV & Battery Discharging',
+            15: 'Generator Charging',
+            16: 'Generator Charging + Gen Bypass',
+            17: 'PV & Generator Charging',
+            18: 'PV & Generator Charging + Generator Bypass',
+            19: 'PV Charging + Generator Bypass',
+            20: 'Generator Bypass',
+            21: 'PV Export to Grid',
+            22: 'PV Export + Loads Supporting',
+            23: 'PV Charging + Export to Grid',
+            24: 'PV Charging + Export + Loads Supporting',
+            25: 'Battery Export to Grid',
+            26: 'Battery Export + Loads Supporting',
+            27: 'Battery & PV Export to Grid',
+            28: 'Battery & PV Export + Loads Supporting'
+          } %}
+          {% set code = states('sensor.growatt_status') | int(-1) %}
+          {{ map.get(code, 'Unknown') }}
+
+      - name: Growatt Fault Info
+        unique_id: growatt_fault_info
+        state: >
+          {% set f = states('sensor.growatt_fault_code') | int(0) %}
+          {% set ns = namespace(items=[]) %}
+          {% if (f | bitwise_and(1)) > 0 %}{% set ns.items = ns.items + ['Fan Lock'] %}{% endif %}
+          {% if (f | bitwise_and(2)) > 0 %}{% set ns.items = ns.items + ['Over Temperature'] %}{% endif %}
+          {% if (f | bitwise_and(4)) > 0 %}{% set ns.items = ns.items + ['Battery Voltage High'] %}{% endif %}
+          {% if (f | bitwise_and(8)) > 0 %}{% set ns.items = ns.items + ['Battery Low'] %}{% endif %}
+          {% if (f | bitwise_and(16)) > 0 %}{% set ns.items = ns.items + ['Output Short'] %}{% endif %}
+          {% if (f | bitwise_and(32)) > 0 %}{% set ns.items = ns.items + ['Output Voltage High'] %}{% endif %}
+          {% if (f | bitwise_and(64)) > 0 %}{% set ns.items = ns.items + ['Overload'] %}{% endif %}
+          {% if (f | bitwise_and(128)) > 0 %}{% set ns.items = ns.items + ['Bus Voltage High'] %}{% endif %}
+          {% if (f | bitwise_and(256)) > 0 %}{% set ns.items = ns.items + ['Bus Soft Start Fail'] %}{% endif %}
+          {{ ns.items | join(', ') if ns.items | count > 0 else 'Normal' }}
+
+      - name: Growatt Warning Info
+        unique_id: growatt_warning_info
+        state: >
+          {% set wl = states('sensor.growatt_warning_code_l') | int(0) %}
+          {% set wh = states('sensor.growatt_warning_code_h') | int(0) %}
+          {% set ns = namespace(items=[]) %}
+
+          {# WARNING LOW #}
+          {% if (wl | bitwise_and(1)) > 0 %}{% set ns.items = ns.items + ['Fan Locked'] %}{% endif %}
+          {% if (wl | bitwise_and(2)) > 0 %}{% set ns.items = ns.items + ['Over Charge'] %}{% endif %}
+          {% if (wl | bitwise_and(4)) > 0 %}{% set ns.items = ns.items + ['Battery Low'] %}{% endif %}
+          {% if (wl | bitwise_and(8)) > 0 %}{% set ns.items = ns.items + ['Overload'] %}{% endif %}
+          {% if (wl | bitwise_and(16)) > 0 %}{% set ns.items = ns.items + ['Power Derating'] %}{% endif %}
+          {% if (wl | bitwise_and(32)) > 0 %}{% set ns.items = ns.items + ['Solar Stop Battery Low'] %}{% endif %}
+          {% if (wl | bitwise_and(64)) > 0 %}{% set ns.items = ns.items + ['PV Voltage High Stop'] %}{% endif %}
+          {% if (wl | bitwise_and(128)) > 0 %}{% set ns.items = ns.items + ['Solar Stop Overload'] %}{% endif %}
+          {% if (wl | bitwise_and(256)) > 0 %}{% set ns.items = ns.items + ['Grid Different'] %}{% endif %}
+          {% if (wl | bitwise_and(512)) > 0 %}{% set ns.items = ns.items + ['Grid Phase Error'] %}{% endif %}
+          {% if (wl | bitwise_and(1024)) > 0 %}{% set ns.items = ns.items + ['Output Phase Loss'] %}{% endif %}
+          {% if (wl | bitwise_and(2048)) > 0 %}{% set ns.items = ns.items + ['Over Temperature'] %}{% endif %}
+          {% if (wl | bitwise_and(4096)) > 0 %}{% set ns.items = ns.items + ['Buck Current Over'] %}{% endif %}
+          {% if (wl | bitwise_and(8192)) > 0 %}{% set ns.items = ns.items + ['Battery Disconnected'] %}{% endif %}
+          {% if (wl | bitwise_and(16384)) > 0 %}{% set ns.items = ns.items + ['BMS Communication Error'] %}{% endif %}
+          {% if (wl | bitwise_and(32768)) > 0 %}{% set ns.items = ns.items + ['PV Power Insufficient'] %}{% endif %}
+
+          {# WARNING HIGH #}
+          {% if (wh | bitwise_and(1)) > 0 %}{% set ns.items = ns.items + ['No Battery Parallel Disable'] %}{% endif %}
+          {% if (wh | bitwise_and(2)) > 0 %}{% set ns.items = ns.items + ['Parallel Version Different'] %}{% endif %}
+          {% if (wh | bitwise_and(8)) > 0 %}{% set ns.items = ns.items + ['Capacity Different'] %}{% endif %}
+          {% if (wh | bitwise_and(16)) > 0 %}{% set ns.items = ns.items + ['Host Loss'] %}{% endif %}
+          {% if (wh | bitwise_and(32)) > 0 %}{% set ns.items = ns.items + ['BMS Cell Over Volt'] %}{% endif %}
+          {% if (wh | bitwise_and(64)) > 0 %}{% set ns.items = ns.items + ['BMS Total Over Volt'] %}{% endif %}
+          {% if (wh | bitwise_and(128)) > 0 %}{% set ns.items = ns.items + ['BMS Discharge Overcurrent'] %}{% endif %}
+          {% if (wh | bitwise_and(256)) > 0 %}{% set ns.items = ns.items + ['BMS Charge Overcurrent'] %}{% endif %}
+          {% if (wh | bitwise_and(512)) > 0 %}{% set ns.items = ns.items + ['BMS Over Temperature'] %}{% endif %}
+          {% if (wh | bitwise_and(1024)) > 0 %}{% set ns.items = ns.items + ['Battery Voltage Inconsistent'] %}{% endif %}
+
+          {{ ns.items | join(', ') if ns.items | count > 0 else 'Normal' }}
