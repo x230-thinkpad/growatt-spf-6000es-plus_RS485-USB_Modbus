@@ -1,0 +1,62 @@
+- id: growatt_write_ac_output
+  alias: Growatt Write AC Output
+  triggers:
+    - trigger: state
+      entity_id: input_select.growatt_ac_source
+  actions:
+    - action: modbus.write_register
+      data:
+        hub: Growatt_spf_6000es_plus
+        slave: 1
+        address: 1
+        value: >
+          {% set map = {
+            'SBU priority':0,
+            'Solar first':1,
+            'Utility first':2,
+            'SUB priority':3
+          } %}
+          {{ map.get(states('input_select.growatt_ac_source'), 0) }}
+  mode: single
+
+- id: growatt_write_charge_source
+  alias: Growatt Write Charge Source
+  triggers:
+    - trigger: state
+      entity_id: input_select.growatt_charge_source
+  actions:
+    - action: modbus.write_register
+      data:
+        hub: Growatt_spf_6000es_plus
+        slave: 1
+        address: 2
+        value: >
+          {% set map = {
+            'Solar first':0,
+            'Solar and Utility':1,
+            'Only Solar':2
+          } %}
+          {{ map.get(states('input_select.growatt_charge_source'), 0) }}
+  mode: single
+
+- id: growatt_write_battery_type
+  alias: Growatt Write Battery Type
+  triggers:
+    - trigger: state
+      entity_id: input_select.growatt_battery_type
+  actions:
+    - action: modbus.write_register
+      data:
+        hub: Growatt_spf_6000es_plus
+        slave: 1
+        address: 39
+        value: >
+          {% set map = {
+            'AGM':0,
+            'Flooded':1,
+            'User-Defined':2,
+            'Lithium':3,
+            'User-Defined 2':4
+          } %}
+          {{ map.get(states('input_select.growatt_battery_type'), 0) }}
+  mode: single

@@ -1,0 +1,24 @@
+input_select:
+  growatt_ac_source:
+    name: Growatt AC Output Source
+    options:
+      - SBU priority
+      - Solar first
+      - Utility first
+      - SUB priority
+
+  growatt_charge_source:
+    name: Growatt Charge Source
+    options:
+      - Solar first
+      - Solar and Utility
+      - Only Solar
+
+  growatt_battery_type:
+    name: Growatt Battery Type
+    options:
+      - AGM
+      - Flooded
+      - User-Defined
+      - Lithium
+      - User-Defined 2
