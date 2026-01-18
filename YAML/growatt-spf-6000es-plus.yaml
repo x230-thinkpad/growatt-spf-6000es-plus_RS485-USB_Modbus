@@ -2,7 +2,7 @@ modbus:
   - name: Growatt_spf_6000es_plus
     type: serial
     method: rtu
-    port: /dev/serial/by-id/usb-WCH.CN_USB_Quad_Serial_BC62D7ABCD-if04
+    port: #your growatt usb port
     baudrate: 9600
     stopbits: 1
     bytesize: 8
@@ -255,7 +255,7 @@ modbus:
         device_class: energy
         unit_of_measurement: kWh
         slave: 1
-        address: 64
+        address: 85
         input_type: input
         data_type: uint32
         scale: 0.1
@@ -264,31 +264,6 @@ modbus:
 
       - name: Growatt Inverter Out Energy Total
         unique_id: growatt_inverter_out_energy_total
-        device_class: energy
-        unit_of_measurement: kWh
-        state_class: total_increasing
-        slave: 1
-        address: 66
-        input_type: input
-        data_type: uint32
-        scale: 0.1
-        precision: 1
-        scan_interval: 5
-
-      - name: Growatt Total Discharge Energy Today
-        unique_id: growatt_total_discharge_energy_today
-        device_class: energy
-        unit_of_measurement: kWh
-        slave: 1
-        address: 85
-        input_type: input
-        data_type: uint32
-        scale: 0.1
-        precision: 1
-        scan_interval: 5
-
-      - name: Growatt Discharge Energy Total
-        unique_id: growatt_discharge_energy_total
         device_class: energy
         unit_of_measurement: kWh
         state_class: total_increasing
@@ -483,7 +458,7 @@ modbus:
         input_type: input
         data_type: int16
         scale: 0.1
-        precision: 2
+        precision: 1
         scan_interval: 5
 
       # Growatt Battery Charge Energy Today
@@ -492,11 +467,11 @@ modbus:
         device_class: energy
         unit_of_measurement: kWh
         slave: 1
-        address: 98
+        address: 99
         input_type: input
-        data_type: uint32
+        data_type: int16
         scale: 0.1
-        precision: 2
+        precision: 1
         scan_interval: 5
 
       # Growatt Battery Charge Energy Total
@@ -510,7 +485,7 @@ modbus:
         input_type: input
         data_type: uint32
         scale: 0.1
-        precision: 2
+        precision: 1
         scan_interval: 5
 
       # Growatt Battery Discharge Energy Today
@@ -523,7 +498,7 @@ modbus:
         input_type: input
         data_type: uint32
         scale: 0.1
-        precision: 2
+        precision: 1
         scan_interval: 5
 
       # Growatt Battery Discharge Energy total
