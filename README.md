@@ -1,21 +1,21 @@
 Monitor and Control Solar Inverter Growatt SPF 6000ES PLUS - RS485-USB to Home Assistant
 
 Overview
-![OVERVIEW](image-1.png)
+<img width="1710" height="918" alt="image" src="https://github.com/user-attachments/assets/c8a7f034-2207-4176-b114-ba62d99fc0fc" />
+
 
 Fan Speed & Alarm Infromation
+<img width="422" height="319" alt="image" src="https://github.com/user-attachments/assets/611dca54-5d9a-4a55-a610-b0b4d4457548" />
 
-![FAN SPEED & ALARM INFORMATION](image-2.png)
 
 OUTPUT INVERTER SETTINGS 
+<img width="462" height="327" alt="image" src="https://github.com/user-attachments/assets/021580bb-9a76-482d-b963-493c0af2bed8" />
 
-![OUTPUT SETTINGS - SYNC TO INVERTER](image-3.png) 
+CHARGE SOURCE SETTINGS 
+<img width="460" height="310" alt="image" src="https://github.com/user-attachments/assets/40f23670-ca4d-408d-a179-0f3bb38f4716" />
 
-SOURCE SETTINGS 
-
-![CHARGE SOURCE SETTINGS](image-4.png) 
 
 BATTERY TYPE 
+<img width="450" height="333" alt="image" src="https://github.com/user-attachments/assets/93b645d8-5d6e-4608-98f5-bd9106e405bc" />
 
-![BATTERY TYPE](image-5.png)
 
