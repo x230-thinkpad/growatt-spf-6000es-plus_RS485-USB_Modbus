@@ -7,5 +7,10 @@ Overview
 <img width="460" height="310" alt="image" src="https://github.com/user-attachments/assets/40f23670-ca4d-408d-a179-0f3bb38f4716" />
 <img width="450" height="333" alt="image" src="https://github.com/user-attachments/assets/93b645d8-5d6e-4608-98f5-bd9106e405bc" />
 
+Wiring Guide
+<img width="2349" height="805" alt="image" src="https://github.com/user-attachments/assets/90cc6440-4faf-40ea-8e6f-b5108bd3462b" />
+
+
+
 
 
