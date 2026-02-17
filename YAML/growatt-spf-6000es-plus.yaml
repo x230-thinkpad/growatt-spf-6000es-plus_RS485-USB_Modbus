@@ -9,13 +9,7 @@ modbus:
     parity: N
     scan_interval: 5
 
-    binary_sensors:
-      - name: Growatt Standby State
-        unique_id: growatt_standby_state
-        slave: 1
-        address: 0
-        input_type: holding
-
+# PLATFORM SENSOR
     sensors:
       # System run state
       - name: Growatt Status
@@ -45,6 +39,79 @@ modbus:
         address: 39
         input_type: holding
         data_type: int16
+        
+      - name: Growatt Max Charge Current
+        unique_id: growatt_max_chg_current
+        slave: 1
+        address: 34
+        input_type: holding
+        unit_of_measurement: A
+        data_type: uint16
+        
+      - name: Growatt AC Max Charging Current
+        unique_id: growatt_ac_max_chg_current
+        slave: 1
+        address: 38
+        input_type: holding
+        unit_of_measurement: A
+        data_type: uint16
+        
+      - name: Growatt Charging Constant Voltage
+        unique_id: growatt_bulk_volt
+        slave: 1
+        address: 35
+        input_type: holding
+        unit_of_measurement: V
+        scale: 0.1
+        precision: 1
+        data_type: uint16
+        
+      - name: Growatt Float Voltage
+        unique_id: growatt_float_voltage
+        slave: 1
+        address: 36
+        input_type: holding
+        unit_of_measurement: V
+        scale: 0.1
+        precision: 1
+        data_type: uint16
+        
+      - name: Growatt Battery to Grid
+        unique_id: growatt_batt_to_grid
+        slave: 1
+        address: 37
+        input_type: holding
+        unit_of_measurement: V
+        scale: 0.1
+        precision: 1
+        data_type: uint16
+        
+      - name: Growatt Grid to Battery
+        unique_id: growatt_grid_to_batt
+        slave: 1
+        address: 95
+        input_type: holding
+        unit_of_measurement: V
+        scale: 0.1
+        precision: 1
+        data_type: uint16
+        
+      - name: Growatt Battery CutOff
+        unique_id: growatt_bat_cutoff
+        slave: 1
+        address: 82
+        input_type: holding
+        unit_of_measurement: V
+        scale: 0.1
+        precision: 1
+        data_type: uint16
+        
+      - name: Growatt AC Output Voltage
+        unique_id: growatt_out_volt
+        slave: 1
+        address: 18
+        input_type: holding
+        data_type: uint16
 
       ##################################################
       #                  PV1 / MPPT1                   #
@@ -740,3 +807,26 @@ modbus:
         input_type: input
         data_type: uint16
         scan_interval: 5
+
+# PLATFORM SWITCH
+    switches:
+      - name: Growatt Output Control
+        unique_id: growatt_ac_output_en_dis
+        slave: 1
+        address: 0
+        write_type: holding
+        command_on: 0
+        command_off: 256
+        verify:
+            address: 0
+            input_type: holding
+            state_on: 0
+            state_off: 256
+
+# PLATFORM BINARY          
+    binary_sensors:
+      - name: Growatt Standby State
+        unique_id: growatt_standby_state
+        slave: 1
+        address: 0
+        input_type: holding

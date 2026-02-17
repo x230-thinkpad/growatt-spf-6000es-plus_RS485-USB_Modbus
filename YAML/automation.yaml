@@ -1,62 +1,520 @@
-- id: growatt_write_ac_output
-  alias: Growatt Write AC Output
-  triggers:
-    - trigger: state
-      entity_id: input_select.growatt_ac_source
-  actions:
-    - action: modbus.write_register
-      data:
-        hub: Growatt_spf_6000es_plus
-        slave: 1
-        address: 1
-        value: >
-          {% set map = {
-            'SBU priority':0,
-            'Solar first':1,
-            'Utility first':2,
-            'SUB priority':3
-          } %}
-          {{ map.get(states('input_select.growatt_ac_source'), 0) }}
-  mode: single
+- id: growatt_ac_output_2way_sync
+  alias: Growatt AC Output Source 2-Way Sync
+  mode: restart
+  trigger:
+  - platform: state
+    entity_id: input_select.growatt_ac_source
+    id: from_input
+  - platform: state
+    entity_id: sensor.growatt_ac_output_source_read
+    id: from_sensor
+  variables:
+    map_to_register:
+      SBU priority: 0
+      Solar first: 1
+      Utility first: 2
+      SUB priority: 3
+    map_to_text:
+      0: SBU priority
+      1: Solar first
+      2: Utility first
+      3: SUB priority
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: from_input
+      - condition: template
+        value_template: "{{ map_to_register[states('input_select.growatt_ac_source')]\n
+          \  != states('sensor.growatt_ac_output_source_read')|int }}\n"
+      sequence:
+      - service: modbus.write_register
+        data:
+          hub: Growatt_spf_6000es_plus
+          slave: 1
+          address: 1
+          value: '{{ map_to_register[states(''input_select.growatt_ac_source'')] }}
 
-- id: growatt_write_charge_source
-  alias: Growatt Write Charge Source
-  triggers:
-    - trigger: state
-      entity_id: input_select.growatt_charge_source
-  actions:
-    - action: modbus.write_register
-      data:
-        hub: Growatt_spf_6000es_plus
-        slave: 1
-        address: 2
-        value: >
-          {% set map = {
-            'Solar first':0,
-            'Solar and Utility':1,
-            'Only Solar':2
-          } %}
-          {{ map.get(states('input_select.growatt_charge_source'), 0) }}
-  mode: single
+            '
+    - conditions:
+      - condition: trigger
+        id: from_sensor
+      - condition: template
+        value_template: "{{ map_to_text[states('sensor.growatt_ac_output_source_read')|int]\n
+          \  != states('input_select.growatt_ac_source') }}\n"
+      sequence:
+      - service: input_select.select_option
+        target:
+          entity_id: input_select.growatt_ac_source
+        data:
+          option: '{{ map_to_text[states(''sensor.growatt_ac_output_source_read'')|int]
+            }}
 
-- id: growatt_write_battery_type
-  alias: Growatt Write Battery Type
+            '
+- id: growatt_charge_source_2way_sync
+  alias: Growatt Charge Source 2-Way Sync
+  mode: restart
+  trigger:
+  - platform: state
+    entity_id: input_select.growatt_charge_source
+    id: from_input
+  - platform: state
+    entity_id: sensor.growatt_charge_source_read
+    id: from_sensor
+  variables:
+    map_to_register:
+      Solar first: 0
+      Solar and Utility: 1
+      Only Solar: 2
+    map_to_text:
+      0: Solar first
+      1: Solar and Utility
+      2: Only Solar
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: from_input
+      - condition: template
+        value_template: "{{ map_to_register[states('input_select.growatt_charge_source')]\n
+          \  != states('sensor.growatt_charge_source_read')|int }}\n"
+      sequence:
+      - service: modbus.write_register
+        data:
+          hub: Growatt_spf_6000es_plus
+          slave: 1
+          address: 2
+          value: '{{ map_to_register[states(''input_select.growatt_charge_source'')]
+            }}
+
+            '
+    - conditions:
+      - condition: trigger
+        id: from_sensor
+      - condition: template
+        value_template: "{{ map_to_text[states('sensor.growatt_charge_source_read')|int]\n
+          \  != states('input_select.growatt_charge_source') }}\n"
+      sequence:
+      - service: input_select.select_option
+        target:
+          entity_id: input_select.growatt_charge_source
+        data:
+          option: '{{ map_to_text[states(''sensor.growatt_charge_source_read'')|int]
+            }}
+
+            '
+- id: growatt_battery_type_2way_sync
+  alias: Growatt Battery Type 2-Way Sync
+  mode: restart
+  trigger:
+  - platform: state
+    entity_id: input_select.growatt_battery_type
+    id: from_input
+  - platform: state
+    entity_id: sensor.growatt_battery_type_read
+    id: from_sensor
+  variables:
+    map_to_register:
+      AGM: 0
+      Flooded: 1
+      User-Defined: 2
+      Lithium: 3
+      User-Defined 2: 4
+    map_to_text:
+      0: AGM
+      1: Flooded
+      2: User-Defined
+      3: Lithium
+      4: User-Defined 2
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: from_input
+      - condition: template
+        value_template: "{{ map_to_register[states('input_select.growatt_battery_type')]\n
+          \  != states('sensor.growatt_battery_type_read')|int }}\n"
+      sequence:
+      - service: modbus.write_register
+        data:
+          hub: Growatt_spf_6000es_plus
+          slave: 1
+          address: 39
+          value: '{{ map_to_register[states(''input_select.growatt_battery_type'')]
+            }}
+
+            '
+    - conditions:
+      - condition: trigger
+        id: from_sensor
+      - condition: template
+        value_template: "{{ map_to_text[states('sensor.growatt_battery_type_read')|int]\n
+          \  != states('input_select.growatt_battery_type') }}\n"
+      sequence:
+      - service: input_select.select_option
+        target:
+          entity_id: input_select.growatt_battery_type
+        data:
+          option: '{{ map_to_text[states(''sensor.growatt_battery_type_read'')|int]
+            }}
+
+            '
+- id: growatt_output_voltage_2way_sync
+  alias: Growatt Output Voltage 2-Way Sync
+  mode: restart
+  trigger:
+  - platform: state
+    entity_id: input_select.growatt_output_voltage
+    id: from_input
+  - platform: state
+    entity_id: sensor.growatt_ac_output_voltage
+    id: from_sensor
+  variables:
+    map_to_register:
+      208VAC: 0
+      230VAC: 1
+      240VAC: 2
+      220VAC: 3
+      100VAC: 4
+      110VAC: 5
+      120VAC: 6
+    map_to_text:
+      0: 208VAC
+      1: 230VAC
+      2: 240VAC
+      3: 220VAC
+      4: 100VAC
+      5: 110VAC
+      6: 120VAC
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: from_input
+      - condition: template
+        value_template: "{{ map_to_register[states('input_select.growatt_output_voltage')]
+          \n   != states('sensor.growatt_ac_output_voltage')|int }}\n"
+      sequence:
+      - service: modbus.write_register
+        data:
+          hub: Growatt_spf_6000es_plus
+          slave: 1
+          address: 18
+          value: '{{ map_to_register[states(''input_select.growatt_output_voltage'')]
+            }}
+
+            '
+    - conditions:
+      - condition: trigger
+        id: from_sensor
+      - condition: template
+        value_template: "{{ map_to_text[states('sensor.growatt_ac_output_voltage')|int]
+          \n   != states('input_select.growatt_output_voltage') }}\n"
+      sequence:
+      - service: input_select.select_option
+        target:
+          entity_id: input_select.growatt_output_voltage
+        data:
+          option: '{{ map_to_text[states(''sensor.growatt_ac_output_voltage'')|int]
+            }}
+
+            '
+- id: growatt_batt_to_grid_2way_sync
+  alias: Growatt Battery To Grid 2-Way Sync
+  mode: restart
+  trigger:
+  - platform: state
+    entity_id:
+    - input_number.growatt_batt_to_grid
+    - sensor.growatt_battery_to_grid
+  action:
+  - choose:
+    - conditions:
+      - condition: template
+        value_template: '{{ trigger.entity_id == ''input_number.growatt_batt_to_grid''
+          }}
+
+          '
+      sequence:
+      - service: modbus.write_register
+        data:
+          hub: Growatt_spf_6000es_plus
+          slave: 1
+          address: 37
+          value: '{{ (states(''input_number.growatt_batt_to_grid'')|float * 10) |
+            int }}
+
+            '
+      - delay: 00:00:02
+    - conditions:
+      - condition: template
+        value_template: '{{ trigger.entity_id.startswith(''sensor.'') }}
+
+          '
+      sequence:
+      - service: input_number.set_value
+        target:
+          entity_id: input_number.growatt_batt_to_grid
+        data:
+          value: '{{ states(trigger.entity_id)|float }}
+
+            '
+- id: growatt_grid_to_batt_2way_sync
+  alias: Growatt Grid To Battery 2-Way Sync
+  mode: restart
+  trigger:
+  - platform: state
+    entity_id: input_number.growatt_grid_to_batt
+    id: from_input
+  - platform: state
+    entity_id: sensor.growatt_grid_to_battery
+    id: from_sensor
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: from_input
+      - condition: template
+        value_template: "{{ (states('input_number.growatt_grid_to_batt')|float | round(1))
+          !=\n   (states('sensor.growatt_grid_to_battery')|float | round(1)) }}\n"
+      sequence:
+      - service: modbus.write_register
+        data:
+          hub: Growatt_spf_6000es_plus
+          slave: 1
+          address: 95
+          value: '{{ (states(''input_number.growatt_grid_to_batt'')|float * 10) |
+            int }}
+
+            '
+    - conditions:
+      - condition: trigger
+        id: from_sensor
+      - condition: template
+        value_template: "{{ (states('input_number.growatt_grid_to_batt')|float | round(1))
+          !=\n   (states('sensor.growatt_grid_to_battery')|float | round(1)) }}\n"
+      sequence:
+      - service: input_number.set_value
+        target:
+          entity_id: input_number.growatt_grid_to_batt
+        data:
+          value: '{{ states(''sensor.growatt_grid_to_battery'')|float }}
+
+            '
+- id: growatt_bulk_voltage_2way_sync
+  alias: Growatt Bulk Voltage 2-Way Sync
+  mode: restart
+  trigger:
+  - platform: state
+    entity_id: input_number.growatt_bulk_voltage
+    id: from_input
+  - platform: state
+    entity_id: sensor.growatt_charging_constant_voltage
+    id: from_sensor
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: from_input
+      - condition: template
+        value_template: "{{ (states('input_number.growatt_bulk_voltage')|float | round(1))
+          !=\n   (states('sensor.growatt_charging_constant_voltage')|float | round(1))
+          }}\n"
+      sequence:
+      - service: modbus.write_register
+        data:
+          hub: Growatt_spf_6000es_plus
+          slave: 1
+          address: 35
+          value: '{{ (states(''input_number.growatt_bulk_voltage'')|float * 10) |
+            int }}
+
+            '
+    - conditions:
+      - condition: trigger
+        id: from_sensor
+      - condition: template
+        value_template: "{{ (states('input_number.growatt_bulk_voltage')|float | round(1))
+          !=\n   (states('sensor.growatt_charging_constant_voltage')|float | round(1))
+          }}\n"
+      sequence:
+      - service: input_number.set_value
+        target:
+          entity_id: input_number.growatt_bulk_voltage
+        data:
+          value: '{{ states(''sensor.growatt_charging_constant_voltage'')|float }}
+
+            '
+- id: growatt_float_voltage_2way_sync
+  alias: Growatt Float Voltage 2-Way Sync
+  mode: restart
+  trigger:
+  - platform: state
+    entity_id: input_number.growatt_float_voltage
+    id: from_input
+  - platform: state
+    entity_id: sensor.growatt_float_voltage
+    id: from_sensor
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: from_input
+      - condition: template
+        value_template: "{{ states('input_number.growatt_float_voltage')|float !=\n
+          \  states('sensor.growatt_float_voltage')|float }}\n"
+      sequence:
+      - service: modbus.write_register
+        data:
+          hub: Growatt_spf_6000es_plus
+          slave: 1
+          address: 36
+          value: '{{ (states(''input_number.growatt_float_voltage'')|float * 10) |
+            int }}
+
+            '
+    - conditions:
+      - condition: trigger
+        id: from_sensor
+      - condition: template
+        value_template: "{{ states('input_number.growatt_float_voltage')|float !=\n
+          \  states('sensor.growatt_float_voltage')|float }}\n"
+      sequence:
+      - service: input_number.set_value
+        target:
+          entity_id: input_number.growatt_float_voltage
+        data:
+          value: '{{ states(''sensor.growatt_float_voltage'')|float }}
+
+            '
+- id: growatt_total_max_charge_current_2way_sync
+  alias: Growatt Total Max Charge Current 2-Way Sync
+  mode: restart
+  trigger:
+  - platform: state
+    entity_id: input_number.growatt_max_charge_current
+    id: from_input
+  - platform: state
+    entity_id: sensor.growatt_max_charge_current
+    id: from_sensor
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: from_input
+      - condition: template
+        value_template: "{{ states('input_number.growatt_max_charge_current')|int
+          !=\n   states('sensor.growatt_max_charge_current')|int }}\n"
+      sequence:
+      - service: modbus.write_register
+        data:
+          hub: Growatt_spf_6000es_plus
+          slave: 1
+          address: 34
+          value: '{{ states(''input_number.growatt_max_charge_current'')|int }}
+
+            '
+    - conditions:
+      - condition: trigger
+        id: from_sensor
+      - condition: template
+        value_template: "{{ states('input_number.growatt_max_charge_current')|int
+          !=\n   states('sensor.growatt_max_charge_current')|int }}\n"
+      sequence:
+      - service: input_number.set_value
+        target:
+          entity_id: input_number.growatt_max_charge_current
+        data:
+          value: '{{ states(''sensor.growatt_max_charge_current'')|int }}
+
+            '
+- id: growatt_ac_max_charge_current_2way_sync
+  alias: Growatt AC Max Charge Current 2-Way Sync
+  mode: restart
+  trigger:
+  - platform: state
+    entity_id: input_number.growatt_ac_charge_current
+    id: from_input
+  - platform: state
+    entity_id: sensor.growatt_ac_max_charging_current
+    id: from_sensor
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: from_input
+      - condition: template
+        value_template: "{{ states('input_number.growatt_ac_charge_current')|int !=\n
+          \  states('sensor.growatt_ac_max_charging_current')|int }}\n"
+      sequence:
+      - service: modbus.write_register
+        data:
+          hub: Growatt_spf_6000es_plus
+          slave: 1
+          address: 38
+          value: '{{ states(''input_number.growatt_ac_charge_current'')|int }}
+
+            '
+    - conditions:
+      - condition: trigger
+        id: from_sensor
+      - condition: template
+        value_template: "{{ states('input_number.growatt_ac_charge_current')|int !=\n
+          \  states('sensor.growatt_ac_max_charging_current')|int }}\n"
+      sequence:
+      - service: input_number.set_value
+        target:
+          entity_id: input_number.growatt_ac_charge_current
+        data:
+          value: '{{ states(''sensor.growatt_ac_max_charging_current'')|int }}
+
+            '
+- id: growatt_battery_cutoff_2way_sync
+  alias: Growatt Battery Cutoff 2-Way Sync
   triggers:
-    - trigger: state
-      entity_id: input_select.growatt_battery_type
+  - entity_id: input_number.growatt_batt_cutoff
+    id: from_input
+    trigger: state
+  - entity_id: sensor.growatt_battery_cutoff
+    id: from_sensor
+    trigger: state
   actions:
-    - action: modbus.write_register
-      data:
-        hub: Growatt_spf_6000es_plus
-        slave: 1
-        address: 39
-        value: >
-          {% set map = {
-            'AGM':0,
-            'Flooded':1,
-            'User-Defined':2,
-            'Lithium':3,
-            'User-Defined 2':4
-          } %}
-          {{ map.get(states('input_select.growatt_battery_type'), 0) }}
-  mode: single
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: from_input
+      sequence:
+      - variables:
+          safe_value: "{% set v = states('input_number.growatt_batt_cutoff')|float
+            %} {% if v < 42 %}\n  42\n{% elif v > 46 %}\n  46\n{% else %}\n  {{ v
+            }}\n{% endif %}\n"
+      - condition: template
+        value_template: "{{ safe_value|float !=\n   states('sensor.growatt_battery_cutoff')|float
+          }}\n"
+      - data:
+          hub: Growatt_spf_6000es_plus
+          slave: 1
+          address: 82
+          value: '{{ (safe_value|float * 10) | int }}
+
+            '
+        action: modbus.write_register
+      - target:
+          entity_id: input_number.growatt_batt_cutoff
+        data:
+          value: '{{ safe_value|float }}'
+        action: input_number.set_value
+    - conditions:
+      - condition: trigger
+        id: from_sensor
+      sequence:
+      - variables:
+          safe_value: "{% set v = states('sensor.growatt_battery_cutoff')|float %}
+            {% if v < 42 %}\n  42\n{% elif v > 46 %}\n  46\n{% else %}\n  {{ v }}\n{%
+            endif %}\n"
+      - target:
+          entity_id: input_number.growatt_batt_cutoff
+        data:
+          value: '{{ safe_value|float }}'
+        action: input_number.set_value
+  mode: restart

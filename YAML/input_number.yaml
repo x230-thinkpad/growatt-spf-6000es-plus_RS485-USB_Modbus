@@ -1,0 +1,50 @@
+input_number:
+
+  growatt_max_charge_current:
+    name: Growatt Max Charge Current
+    min: 0
+    max: 400
+    step: 1
+    mode: box
+
+  growatt_ac_charge_current:
+    name: Growatt AC Charge Current
+    min: 0
+    max: 400
+    step: 1
+    mode: box
+
+  growatt_bulk_voltage:
+    name: Growatt Bulk Voltage
+    min: 50
+    max: 64
+    step: 0.1
+    mode: box
+
+  growatt_float_voltage:
+    name: Growatt Float Voltage
+    min: 50
+    max: 58
+    step: 0.1
+    mode: box
+
+  growatt_batt_to_grid:
+    name: Growatt Battery To Grid
+    min: 44
+    max: 60
+    step: 0.1
+    mode: box
+
+  growatt_grid_to_batt:
+    name: Growatt Grid To Battery
+    min: 48
+    max: 60
+    step: 0.1
+    mode: box
+
+  growatt_batt_cutoff:
+    name: Growatt Battery Cutoff
+    min: 40
+    max: 50
+    step: 0.1
+    mode: box

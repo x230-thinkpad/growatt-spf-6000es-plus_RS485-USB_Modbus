@@ -22,3 +22,14 @@ input_select:
       - User-Defined
       - Lithium
       - User-Defined 2
+      
+  growatt_output_voltage:
+    name: Growatt Output Voltage
+    options:
+      - 208VAC
+      - 230VAC
+      - 240VAC
+      - 220VAC
+      - 100VAC
+      - 110VAC
+      - 120VAC
